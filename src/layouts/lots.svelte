@@ -16,6 +16,24 @@
   //remove all commas
   $: bbl = parseInt(params.bbl.split(',').join(''))
 
+  //generate bbl
+
+  $: bbl_break = {
+    boro: bbl.toString()[0],
+    block: bbl
+      .toString()
+      .slice(1, 6)
+      .replace(/^0+/g, ''),
+    lot: bbl
+      .toString()
+      .slice(6)
+      .replace(/^0+/g, '')
+  }
+
+  $: {
+    console.log(bbl, bbl_break)
+  }
+
   onMount(() => {
     require([
       'esri/Map',
@@ -247,6 +265,32 @@
 <div class="container">
   <h3 class="is-3">Lot Information</h3>
   <p class="is-6 subtitle">Boro-Block-Lot: {bbl}</p>
+  <ul>
+    <li>
+      <a
+        href="{`https://zola.planning.nyc.gov/l/lot/${bbl_break.boro}/${bbl_break.block}/${bbl_break.lot}`}"
+        target="_blank"
+        rel="noopener noreferrer"
+        >View ZOLA</a
+      >
+    </li>
+    <li>
+      <a
+        href="{`http://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${bbl_break.boro}&block=${bbl_break.block}&lot=${bbl_break.lot}`}"
+        target="_blank"
+        rel="noopener noreferrer"
+        >View ACRIS</a
+      >
+    </li>
+    <li>
+      <a
+        href="{`http://a810-bisweb.nyc.gov/bisweb/PropertyBrowseByBBLServlet?allborough=${bbl_break.boro}&allblock=${bbl_break.block}&alllot=${bbl_break.lot}&go5=+GO+&requestid=0`}"
+        target="_blank"
+        rel="noopener noreferrer"
+        >View DOB</a
+      >
+    </li>
+  </ul>
 
   {#if lotDetails.type}
   <p><strong>Type: </strong>{lotDetails.type}</p>

@@ -5,11 +5,12 @@
   let map
 
   onMount(() => {
-    require(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], (
-      Map,
-      MapView,
-      FeatureLayer
-    ) => {
+    require([
+      'esri/Map',
+      'esri/views/MapView',
+      'esri/layers/FeatureLayer',
+      'esri/widgets/Legend'
+    ], (Map, MapView, FeatureLayer, Legend) => {
       map = new Map({
         basemap: 'gray-vector'
       })
@@ -85,6 +86,19 @@
           ]
         }
       })
+
+      //add legend
+      const legend = new Legend({
+        view,
+        layerInfos: [
+          {
+            layer: plutoLayer,
+            title: 'Parcels/ Lots'
+          }
+        ]
+      })
+
+      view.ui.add(legend, 'top-right')
 
       map.add(plutoLayer, 0)
     })

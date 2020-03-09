@@ -16,11 +16,12 @@
   $: bbl = parseInt(params.bbl.split(',').join(''))
 
   onMount(() => {
-    require(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], (
-      Map,
-      MapView,
-      FeatureLayer
-    ) => {
+    require([
+      'esri/Map',
+      'esri/views/MapView',
+      'esri/layers/FeatureLayer',
+      'esri/widgets/Legend'
+    ], (Map, MapView, FeatureLayer, Legend) => {
       const map = new Map({
         basemap: 'gray-vector'
       })
@@ -136,9 +137,26 @@
           }
         })
 
+        //add legend
+        const legend = new Legend({
+          view,
+          layerInfos: [
+            {
+              layer: addressLayer,
+              title: 'Addresses'
+            },
+            {
+              layer: plutoLayer,
+              title: 'Parcels/ Lots'
+            }
+          ]
+        })
+
+        view.ui.add(legend, 'top-right')
+
         map.add(addressLayer, 1)
 
-        //filter for only address that is within 10 feet of buffer
+        //filter for address that is within 10 feet of buffer of bbl
         view
           .whenLayerView(addressLayer)
           .then(layerView => {
@@ -152,13 +170,17 @@
           .then(() => {
             const query = addressLayer.createQuery()
             query.geometry = geometry
-            ;(query.spatialRelationship = 'contains'),
-              (query.distance = 5),
-              (query.units = 'feet')
+            query.spatialRelationship = 'contains'
+            query.distance = 5
+            query.units = 'feet'
             return queryFeaturesItem(addressLayer, query)
           })
           .then(features => {
             addresses = features
+            //reset view
+            view
+              .whenLayerView(addressLayer)
+              .then(layerView => (layerView.filter = { where: '1=1' }))
           })
       })
     })

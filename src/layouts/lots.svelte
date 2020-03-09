@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte'
+  import { link } from 'svelte-spa-router'
   import AddressTable from '../components/addressTable.svelte'
   export let params = {}
   let container
@@ -272,20 +273,24 @@
   <hr />
 
   {#if addresses} {#if addresses.length}
-  <p>There are {addresses.length} addresses for this lot.</p>
+  <p><strong>There are {addresses.length} addresses for this lot.</strong></p>
 
   <AddressTable {addresses} on:message="{highlightAddress}"></AddressTable>
   {:else}
   <p>
-    No addresses mapped in the database, please view the files above.
+    <strong
+      >No addresses mapped in the database, please view the files above.</strong
+    >
   </p>
   {/if} {:else}
   <p>Loading...</p>
   {/if}
 
-  <hr />
+  <br />
 
   <div id="map" bind:this="{container}"></div>
+  <hr />
+  <a href="/" use:link>Go back to main page</a>
 </div>
 
 <style>

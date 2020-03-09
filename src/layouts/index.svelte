@@ -8,15 +8,22 @@
 
 <main>
   <h3 class="title is-3">Manhattan Topographical Bureau</h3>
-  <h6 class="subtitle is-6">Address assignment statuses</h6>
+  <h6 class="subtitle is-6">Address assignment statuses (beta)</h6>
 
   <div id="map">
-    <p class="has-background-light">
-      Search by an address or BBL, then click on a lot to view more details
-    </p>
+    <div class="has-background-light info">
+      <p class="is-6">
+        Search by an address or BBL, then click on a lot to view more details in
+        the popup.
+      </p>
+    </div>
     <AddressSearch {view}></AddressSearch>
     <hr />
     <BBLSearch {view}></BBLSearch>
+    <p>
+      Note: We are current in the process of initializing the database, some
+      addresses and documents might be missing.
+    </p>
     <MapSearch bind:view="{view}"></MapSearch>
   </div>
 </main>
@@ -24,6 +31,10 @@
 <style>
   #map {
     max-width: 1000px;
-    height: 500px;
+    height: 600px;
+  }
+  .info {
+    padding: 1rem 0.5rem;
+    margin-bottom: 1rem;
   }
 </style>

@@ -19,7 +19,15 @@
         container,
         map,
         center: [-74.0034, 40.7128],
-        zoom: 16
+        zoom: 16,
+        popup: {
+          dockEnabled: true,
+          dockOptions: {
+            position: 'top-right',
+            breakpoint: false,
+            buttonEnabled: false
+          }
+        }
       })
 
       function createFillSymbol(value, color) {
@@ -65,7 +73,8 @@
           content: [
             {
               type: 'text',
-              text: '<strong><a href="#/lots/{BBL}">View details</a></strong>'
+              text:
+                '<strong><a href="#/lots/{BBL}">Click here to view more details</a></strong>'
             },
             {
               type: 'fields',
@@ -95,7 +104,8 @@
             layer: plutoLayer,
             title: 'Parcels/ Lots'
           }
-        ]
+        ],
+        style: 'classic'
       })
 
       view.ui.add(legend, 'top-right')

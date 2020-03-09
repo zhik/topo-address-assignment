@@ -61,7 +61,7 @@
           />
         </div>
       </div>
-      <button type="submit" class="button is-info">Search</button>
+      <button type="submit" class="button">Search</button>
     </div>
   </div>
   {#if error}

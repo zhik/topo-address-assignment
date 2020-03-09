@@ -149,7 +149,8 @@
               layer: plutoLayer,
               title: 'Parcels/ Lots'
             }
-          ]
+          ],
+          style: 'classic'
         })
 
         view.ui.add(legend, 'top-right')

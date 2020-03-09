@@ -11,6 +11,9 @@
   <h6 class="subtitle is-6">Address assignment statuses</h6>
 
   <div id="map">
+    <p class="has-background-light">
+      Search by an address or BBL, then click on a lot to view more details
+    </p>
     <AddressSearch {view}></AddressSearch>
     <hr />
     <BBLSearch {view}></BBLSearch>

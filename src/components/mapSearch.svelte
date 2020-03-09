@@ -1,0 +1,101 @@
+<script>
+  import { onMount } from 'svelte'
+  export let view
+  let container
+  let map
+
+  onMount(() => {
+    require(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], (
+      Map,
+      MapView,
+      FeatureLayer
+    ) => {
+      map = new Map({
+        basemap: 'gray-vector'
+      })
+
+      view = new MapView({
+        container,
+        map,
+        center: [-74.0034, 40.7128],
+        zoom: 16
+      })
+
+      function createFillSymbol(value, color) {
+        return {
+          value: value,
+          symbol: {
+            color: color,
+            type: 'simple-fill',
+            style: 'solid',
+            outline: {
+              style: 'none'
+            }
+          },
+          label: value
+        }
+      }
+
+      const typeRenderer = {
+        type: 'unique-value',
+        field: 'TYPE',
+        defaultSymbol: {
+          type: 'simple-fill',
+          color: '#aaaaaa',
+          style: 'solid',
+          outline: {
+            style: 'none'
+          }
+        },
+        uniqueValueInfos: [
+          createFillSymbol('New/Permanent', '#ed5151'),
+          createFillSymbol('Tentative', '#149ece')
+        ]
+      }
+
+      const plutoLayer = new FeatureLayer({
+        url:
+          'https://services9.arcgis.com/E91gVsRO3nuXX9et/ArcGIS/rest/services/mn_topo_pluto_public/FeatureServer/0',
+        renderer: typeRenderer,
+        opacity: 0.4,
+        outFields: ['BBL', 'Type'],
+        popupTemplate: {
+          title: 'Lot Information',
+          content: [
+            {
+              type: 'text',
+              text: '<strong><a href="#/lots/{BBL}">View details</a></strong>'
+            },
+            {
+              type: 'fields',
+              fieldInfos: [
+                {
+                  fieldName: 'BBL',
+                  label: 'Boro-Block-Lot',
+                  stringFieldOption: 'text-box'
+                },
+                {
+                  fieldName: 'Type',
+                  label: 'Type/Status'
+                },
+                { fieldName: 'Comments', label: 'Comments' }
+              ]
+            },
+            { type: 'attachments' }
+          ]
+        }
+      })
+
+      map.add(plutoLayer, 0)
+    })
+  })
+</script>
+
+<div id="map" bind:this="{container}"></div>
+
+<style>
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+</style>

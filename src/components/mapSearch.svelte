@@ -19,15 +19,7 @@
         container,
         map,
         center: [-74.0034, 40.7128],
-        zoom: 16,
-        popup: {
-          dockEnabled: true,
-          dockOptions: {
-            position: 'top-right',
-            breakpoint: false,
-            buttonEnabled: false
-          }
-        }
+        zoom: 16
       })
 
       function createFillSymbol(value, color) {
@@ -104,11 +96,10 @@
             layer: plutoLayer,
             title: 'Parcels/ Lots'
           }
-        ],
-        style: 'classic'
+        ]
       })
 
-      view.ui.add(legend, 'top-right')
+      view.ui.add(legend, 'bottom-right')
 
       map.add(plutoLayer, 0)
     })
@@ -118,6 +109,14 @@
 <div id="map" bind:this="{container}"></div>
 
 <style>
+  :global(.esri-legend) {
+    max-height: 150px !important;
+  }
+
+  :global(.esri-feature__text a) {
+    background-color: #ffcece;
+  }
+
   #map {
     width: 100%;
     height: 100%;

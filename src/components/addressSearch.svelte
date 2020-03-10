@@ -5,16 +5,19 @@
   export let view
 
   function _set(addr) {
-    //clear searchAddrs
+    //set value to clicked addr , then clear searchAddrs
+    if (addr) value = addr
     searchAddrs = []
     fetch(`https://geosearch.planninglabs.nyc/v1/search?text=${value}&size=5`)
       .then(response => response.json())
       .then(response => {
         //use the first address
-        console.log(response.features, value)
         if (response.features.length > 0) {
           const coords = response.features[0].geometry.coordinates
-          view.goTo(coords)
+          view.goTo({
+            target: coords,
+            zoom: 17
+          })
         } else {
           //throw error
           error = true

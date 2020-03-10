@@ -30,10 +30,6 @@
       .replace(/^0+/g, '')
   }
 
-  $: {
-    console.log(bbl, bbl_break)
-  }
-
   onMount(() => {
     require([
       'esri/Map',
@@ -168,11 +164,10 @@
               layer: plutoLayer,
               title: 'Parcels/ Lots'
             }
-          ],
-          style: 'classic'
+          ]
         })
 
-        view.ui.add(legend, 'top-right')
+        view.ui.add(legend, 'bottom-right')
 
         map.add(addressLayer, 1)
 
@@ -338,6 +333,10 @@
 </div>
 
 <style>
+  :global(.esri-legend) {
+    max-height: 150px !important;
+  }
+
   #map {
     max-width: 1000px;
     height: 500px;

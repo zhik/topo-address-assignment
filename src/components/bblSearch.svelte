@@ -14,7 +14,10 @@
         if ('latitudeInternalLabel' in response.bbl) {
           const { latitudeInternalLabel, longitudeInternalLabel } = response.bbl
           const coords = [longitudeInternalLabel, latitudeInternalLabel]
-          view.goTo(coords)
+          view.goTo({
+            target: coords,
+            zoom: 17
+          })
         } else {
           //throw error
           error = true

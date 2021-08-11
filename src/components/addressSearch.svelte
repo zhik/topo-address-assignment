@@ -10,6 +10,7 @@
     if (addr && typeof addr !== 'object'){
       value = addr
     }else{
+      error = true
       return 0
     }
     searchAddrs = []

@@ -3,10 +3,15 @@
   let searchAddrs = []
   let error = false
   export let view
+  export let plutoLayer
 
   function _set(addr) {
     //set value to clicked addr , then clear searchAddrs
-    if (addr) value = addr
+    if (addr && typeof addr !== 'object'){
+      value = addr
+    }else{
+      return 0
+    }
     searchAddrs = []
     fetch(`https://geosearch.planninglabs.nyc/v1/search?text=${value}&size=5`)
       .then(response => response.json())
@@ -18,6 +23,35 @@
             target: coords,
             zoom: 17
           })
+
+           //search plutoLayer
+           const point = {
+            x: coords[0],
+            y: coords[1],
+            spatialReference: {
+              wkid: 4326,
+            },
+            type: "point",
+          };
+          console.log(point);
+          plutoLayer
+            .queryFeatures({
+              //query object
+              geometry: point,
+              spatialRelationship: "intersects",
+              returnGeometry: false,
+              outFields: ["BBL"],
+              distance: 10,
+              units: "feet",
+            })
+            .then((featureSet) => {
+              console.log(featureSet.features);
+              // open popup of query result
+              view.popup.open({
+                location: point,
+                features: featureSet.features
+              });
+            });
         } else {
           //throw error
           error = true
@@ -47,7 +81,7 @@
 <form on:submit|preventDefault="{_set}">
   <div class="field is-horizontal">
     <div class="field-label is-normal">
-      <label class="label">Search by Address</label>
+      <label class="label" for="address">Search by Address</label>
     </div>
     <div class="field-body">
       <div class="field">

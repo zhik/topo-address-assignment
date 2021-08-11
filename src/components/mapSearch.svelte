@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   export let view
+  export let plutoLayer
   let container
   let map
 
@@ -54,7 +55,7 @@
         ]
       }
 
-      const plutoLayer = new FeatureLayer({
+      plutoLayer = new FeatureLayer({
         url:
           'https://services9.arcgis.com/E91gVsRO3nuXX9et/ArcGIS/rest/services/mn_topo_pluto_public/FeatureServer/0',
         renderer: typeRenderer,

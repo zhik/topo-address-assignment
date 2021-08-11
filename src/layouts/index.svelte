@@ -4,6 +4,7 @@
   import BBLSearch from '../components/bblSearch.svelte'
 
   let view
+  let plutoLayer
 </script>
 
 <main>
@@ -17,14 +18,14 @@
         the popup.
       </p>
     </div>
-    <AddressSearch {view}></AddressSearch>
+    <AddressSearch {view} {plutoLayer}></AddressSearch>
     <hr />
-    <BBLSearch {view}></BBLSearch>
+    <BBLSearch {view} {plutoLayer}></BBLSearch>
     <p>
       Note: We are current in the process of initializing the database, some
       addresses and documents might be missing.
     </p>
-    <MapSearch bind:view="{view}"></MapSearch>
+    <MapSearch bind:view="{view}" bind:plutoLayer="{plutoLayer}"></MapSearch>
   </div>
 </main>
 

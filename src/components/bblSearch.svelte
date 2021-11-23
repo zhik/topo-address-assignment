@@ -1,15 +1,18 @@
 <script>
   let block = "";
   let lot = "";
-  let error = false;
+  let error = "";
 
   export let view;
   export let plutoLayer;
 
+  const headers = new Headers();
+  headers.append('Ocp-Apim-Subscription-Key','8ef9b00a1d6c4a97b17a6c4828cfc2eb')
+
   function _set(addr) {
     fetch(
-      `https://cors-e.herokuapp.com/https://api.cityofnewyork.us/geoclient/v1/bbl.json?borough=manhattan&block=${block}&lot=${lot}&app_id=d2a49e32&app_key=c8c857bdc19eb8829bf9fa5a920df18c`
-    )
+      `https://api.nyc.gov/geo/geoclient/v1/bbl.json?borough=manhattan&block=${block}&lot=${lot}`
+    , {headers})
       .then((response) => response.json())
       .then((response) => {
         if ("latitudeInternalLabel" in response.bbl) {
@@ -51,9 +54,9 @@
             });
         } else {
           //throw error
-          error = true;
+          error = 'bbl-error';
         }
-      });
+      }).catch(e => error = 'api-down')
   }
 </script>
 
@@ -90,7 +93,7 @@
             pattern="\d*"
             name="lot"
             bind:value={lot}
-            on:keyup={() => (error = false)}
+            on:keyup={() => (error = "")}
             autocomplete="off"
             class={!error
               ? "input is-fullwidth"
@@ -102,8 +105,11 @@
       <button type="submit" class="button">Search</button>
     </div>
   </div>
-  {#if error}
+  {#if error === 'bbl-error'}
     <p class="help is-danger">Block and/or Lot is invalid</p>
+  {/if}
+  {#if error === 'api-down'}
+  <p class="help is-danger">BBL search database is down</p>
   {/if}
 </form>
 

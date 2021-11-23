@@ -14,12 +14,12 @@
   <div id="map">
     <div class="has-background-light info">
       <p class="is-6">
-        Search by an address or BBL, then click on a lot to view more details in
+        Search by BBL, then click on a lot to view more details in
         the popup.
       </p>
     </div>
-    <AddressSearch {view} {plutoLayer}></AddressSearch>
-    <hr />
+    <!-- <AddressSearch {view} {plutoLayer}></AddressSearch>
+    <hr /> -->
     <BBLSearch {view} {plutoLayer}></BBLSearch>
     <p>
       Note: We are current in the process of initializing the database, some

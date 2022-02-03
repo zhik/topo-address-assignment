@@ -1,32 +1,40 @@
 <script>
-  let value = ''
-  let searchAddrs = []
-  let error = false
-  export let view
-  export let plutoLayer
+  let value = "";
+  let searchAddrs = [];
+  let error = false;
+  export let view;
+  export let plutoLayer;
+  let timer
+
+  function debounce(v) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      _search();
+    }, 300);
+  }
 
   function _set(addr) {
     //set value to clicked addr , then clear searchAddrs
-    if (addr && typeof addr !== 'object'){
-      value = addr
-    }else{
-      error = true
-      return 0
+    if (addr && typeof addr !== "object") {
+      value = addr;
+    } else {
+      error = true;
+      return 0;
     }
-    searchAddrs = []
+    searchAddrs = [];
     fetch(`https://geosearch.planninglabs.nyc/v1/search?text=${value}&size=5`)
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         //use the first address
         if (response.features.length > 0) {
-          const coords = response.features[0].geometry.coordinates
+          const coords = response.features[0].geometry.coordinates;
           view.goTo({
             target: coords,
-            zoom: 17
-          })
+            zoom: 17,
+          });
 
-           //search plutoLayer
-           const point = {
+          //search plutoLayer
+          const point = {
             x: coords[0],
             y: coords[1],
             spatialReference: {
@@ -50,36 +58,36 @@
               // open popup of query result
               view.popup.open({
                 location: point,
-                features: featureSet.features
+                features: featureSet.features,
               });
             });
         } else {
           //throw error
-          error = true
+          error = true;
         }
-      })
+      });
   }
 
   function _search() {
     if (value.length > 1) {
       fetch(`https://geosearch.planninglabs.nyc/v1/autocomplete?text=${value}`)
-        .then(response => response.json())
+        .then((response) => response.json())
         .then(
-          response =>
+          (response) =>
             (searchAddrs = response.features
-              .map(feature =>
-                feature.properties.label.replace(', New York, NY, USA', '')
+              .map((feature) =>
+                feature.properties.label.replace(", New York, NY, USA", "")
               )
               .slice(0, 5))
-        )
+        );
     } else {
-      searchAddrs = []
+      searchAddrs = [];
     }
-    return true
+    return true;
   }
 </script>
 
-<form on:submit|preventDefault="{_set}">
+<form on:submit|preventDefault={_set}>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label" for="address">Search by Address</label>
@@ -94,8 +102,12 @@
             name="address"
             bind:value
             autocomplete="off"
-            on:keyup="{() => {_search(); error = false;}}"
-            class="{!error ? 'input is-fullwidth' : 'input is-fullwidth is-danger'}"
+            on:keyup={({ target: { value } }) => {
+              debounce(value)
+            }}
+            class={!error
+              ? "input is-fullwidth"
+              : "input is-fullwidth is-danger"}
           />
         </div>
       </div>
@@ -103,16 +115,15 @@
     </div>
   </div>
   {#if error}
-  <p class="help is-danger">
-    No addresses found
-  </p>
+    <p class="help is-danger">No addresses found</p>
   {/if}
 
   <ul>
     {#each searchAddrs as addr}
-    <li on:click="{() => _set(addr)}">{addr}</li>
+      <li on:click={() => _set(addr)}>{addr}</li>
     {/each}
   </ul>
+  <p class="help">If your address can not be found, try a nearby address.</p>
 </form>
 
 <style>
@@ -125,7 +136,7 @@
     box-sizing: border-box;
     margin-bottom: 5px;
   }
-  input[type='submit'] {
+  input[type="submit"] {
     background-color: #6a6a6a;
     border: none;
     color: white;

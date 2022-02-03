@@ -18,8 +18,8 @@
         the popup.
       </p>
     </div>
-    <!-- <AddressSearch {view} {plutoLayer}></AddressSearch>
-    <hr /> -->
+    <AddressSearch {view} {plutoLayer}></AddressSearch>
+    <hr />
     <BBLSearch {view} {plutoLayer}></BBLSearch>
     <p>
       Note: We are current in the process of initializing the database, some

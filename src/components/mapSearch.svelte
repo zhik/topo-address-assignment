@@ -52,7 +52,7 @@
         uniqueValueInfos: [
           createFillSymbol('New/Permanent', '#ed5151'),
           createFillSymbol('Tentative', '#149ece'),
-          createFillSymbol('NO-TOPO', '#ffde3e')
+          createFillSymbol('No Topo', '#ffde3e')
         ]
       }
 

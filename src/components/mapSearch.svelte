@@ -23,14 +23,14 @@
         zoom: 16
       })
 
-      function createFillSymbol(value, color) {
+      function createFillSymbol(value, color, outline) {
         return {
           value: value,
           symbol: {
             color: color,
             type: 'simple-fill',
             style: 'solid',
-            outline: {
+            outline: outline ? {color: outline, width: '0.5px'} : {
               style: 'none'
             }
           },
@@ -50,9 +50,9 @@
           }
         },
         uniqueValueInfos: [
-          createFillSymbol('New/Permanent', '#ed5151'),
-          createFillSymbol('Tentative', '#149ece'),
-          createFillSymbol('No Topo', '#ffde3e')
+          createFillSymbol('New/Permanent', '#ed5151', false),
+          createFillSymbol('Tentative', '#149ece', false),
+          createFillSymbol('No Topo', '#ffde3e', [230, 0, 0, 0.75])
         ]
       }
 

@@ -22,7 +22,7 @@
       return 0;
     }
     searchAddrs = [];
-    fetch(`https://geosearch.planninglabs.nyc/v1/search?text=${value}&size=5`)
+    fetch(`https://geosearch.planninglabs.nyc/v2/search?text=${value}&size=5`)
       .then((response) => response.json())
       .then((response) => {
         //use the first address
@@ -70,13 +70,13 @@
 
   function _search() {
     if (value.length > 1) {
-      fetch(`https://geosearch.planninglabs.nyc/v1/autocomplete?text=${value}`)
+      fetch(`https://geosearch.planninglabs.nyc/v2/autocomplete?text=${value}`)
         .then((response) => response.json())
         .then(
           (response) =>
             (searchAddrs = response.features
               .map((feature) =>
-                feature.properties.label.replace(", New York, NY, USA", "")
+                feature.properties.label.replace(", NY, USA", "")
               )
               .slice(0, 5))
         );
